@@ -1,13 +1,13 @@
-package com.jodatrash.springcloud.user.pafccuserservice;
+package com.jodatrash.springcloud.user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PafcCUserServiceApplication {
+public class UserServiceApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PafcCUserServiceApplication.class, args);
+		SpringApplication.run(UserServiceApp.class, args);
 	}
 
 }
