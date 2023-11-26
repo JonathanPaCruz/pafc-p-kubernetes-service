@@ -16,6 +16,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>pafc-c-user-service</module>
+        <module>pafc-c-course-service</module>
     </modules>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
