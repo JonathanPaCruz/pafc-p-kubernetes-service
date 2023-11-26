@@ -24,7 +24,7 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    @GetMapping("/private/v1/info/course")
+    @GetMapping("/private/v1/info/all")
     public ResponseEntity<List<Course>> view() {
         return ResponseEntity.ok(courseService.info());
     }
