@@ -24,12 +24,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/private/v1/info")
+    @GetMapping("/private/v1/info/all")
     public List<Users> view() {
         return userService.findAll();
     }
 
-    @GetMapping("/private/v1/info/{id}")
+    @GetMapping("/private/v1/info/user/{id}")
     public ResponseEntity<?> detailUsers(@PathVariable Long id) {
         Optional<Users> userOptional = userService.byId(id);
         if (userOptional.isPresent()) {
@@ -38,13 +38,13 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/private/v1/create")
+    @PostMapping("/private/v1/create/user")
     // @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> create(@RequestBody Users user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user));
     }
 
-    @PutMapping("/private/v1/edit/{id}")
+    @PutMapping("/private/v1/edit/user/{id}")
     public ResponseEntity<?> edit(@RequestBody Users user, @PathVariable Long id) {
         Optional<Users> userOptional = userService.byId(id);
         if (userOptional.isPresent()) {
@@ -57,7 +57,7 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/private/v1/delete/{id}")
+    @DeleteMapping("/private/v1/delete/user/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Optional<Users> userOptional = userService.byId(id);
         if (userOptional.isPresent()) {
