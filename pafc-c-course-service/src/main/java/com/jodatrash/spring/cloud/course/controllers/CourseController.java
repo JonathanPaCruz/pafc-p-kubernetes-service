@@ -1,11 +1,15 @@
 package com.jodatrash.spring.cloud.course.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,13 +43,19 @@ public class CourseController {
     }
 
     @PostMapping("/private/v1/create/course")
-    public ResponseEntity<?> create(@RequestBody Course course) {
+    public ResponseEntity<?> create(@Valid @RequestBody Course course, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            return getValidateResponse(bindingResult);
+        }
         Course courseDb = courseService.save(course);
         return ResponseEntity.status(HttpStatus.CREATED).body(courseService.save(courseDb));
     }
 
     @PutMapping("/private/v1/edit/course/{id}")
-    public ResponseEntity<?> edit(@RequestBody Course course, @PathVariable Long id) {
+    public ResponseEntity<?> edit(@Valid @RequestBody Course course, BindingResult bindingResult, @PathVariable Long id) {
+        if (bindingResult.hasErrors()){
+            return getValidateResponse(bindingResult);
+        }
         Optional<Course> oCourse = courseService.byId(id);
         if (oCourse.isPresent()) {
             Course courseDb = oCourse.get();
@@ -63,5 +73,12 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.notFound().build();
+    }
+    private static ResponseEntity<Map<String, String>> getValidateResponse(BindingResult bindingResult) {
+        Map<String, String> error = new HashMap<>();
+        bindingResult.getFieldErrors().forEach(fieldError -> {
+            error.put(fieldError.getField(), "Campo " + fieldError.getField() +  " " + fieldError.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(error);
     }
 }
